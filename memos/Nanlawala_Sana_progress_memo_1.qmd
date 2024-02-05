@@ -20,36 +20,67 @@ reference-location: margin
 citation-location: margin
 ---
 
-::: {.callout-tip icon=false}
-
+::: {.callout-tip icon="false"}
 ## Github Repo Link
 
-[https://github.com/stat301-2-2024-winter/final-project-2-SanaNanlawala2026.git](https://github.com/stat301-2-2024-winter/final-project-2-SanaNanlawala2026.git)
-
-:::
-
-::: {.callout-warning}
-GitHub (free account) cannot store large files. If you try to commit and push a large dataset you will have an ERROR! Any file over 100 MB (100,000 KB) needs to be added to the `.gitignore` file BEFORE committing.
-
-**We may need to do that for files in your final project!**
+<https://github.com/stat301-2-2024-winter/final-project-2-SanaNanlawala2026.git>
 :::
 
 ## Data source
 
-Blah blah blah^[an example of footnote --- [content in margins](https://quarto.org/docs/blog/posts/2022-02-17-advanced-layout/)]
+This dataframe was sourced from Kaggle at: <https://www.kaggle.com/datasets/dbdmobile/myanimelist-dataset/>
 
 ## Why this data
 
-Blah blah blah^[another footnote]
+I chose this data set because as someone who interested in anime myself, I would like to see a predictive model built around the ratings that were given to the animes. I think there are a lot of examples of similar models surrounding movies/shows in the West, like with the Netflix Prize dataset for modelling user ratings predictions. It would be interesting to see how it would hold up for anime, which has an entirely demographic of viewers/audience, especially in age.
+
+## Objective/Research Question 
+What I will be looking specifically is to create regression models to help predict the anime 'score' that is the outcome variable of my choosing in this dataset. Some predictors will include duration, rating, popularity, favorites, watching, on-hold. 
 
 ## Data quality & complexity check
 
-Blah blah blah
+Below, I am reading in the dataset named anime. There are currently 25 variables, of which 9 are numeric and the other character/categorical. I will not be using all 25 variables, as many of them are unrelated or irrelevant such as the id, and the synopsis of the show. However, below I will show in the general reading in of the dataset (excluding the synopsis as it makes the table more readable) 
+
+## Data Import/Reading In
+```{r, echo=FALSE}
+library(tidyverse)
+library(knitr)
+anime <- read_csv("data/anime-filtered.csv")
+anime|> 
+  select(!sypnopsis) |> 
+  slice_head(n = 5) |> 
+  kable()
+```
+
+## Data Quality
+To clean up this data further, I will be only evaluating animes that are tv shows specifically, which will then require me to adjust the factors for the duration variable to simply be in minutes (as movies had previously shown hours as well), and will then become a numeric variable. I will also omit some character variables that are irrellevant such as the Japanese and English names of the anime, as the original name is just fine on its own. I will also be excluding the anime_id. 
+
 
 ## Potential data issues
 
-Blah blah blah
+Some potential data issues I can recognize right off the bat is that some shows are listed separately by their season title. When I was looking at the top scored animes, season 3 of Attack on Titan was listed as one of the top, not its entirety of the show. This could be caused my a multitude of reasons, such as because the producing company has changed, for example. Also, another issue shows that most shows are rated at a score of 6.51 which might pose an issue on the quality. 
 
-## Misc
+## Examination of the Target Variable
+```{r, echo = FALSE}
+library(ggplot2)
+library(tidyverse)
+anime |> 
+  ggplot(aes(Score))+
+  geom_bar()
+```
+A closer look between scores of 6 and 7. 
+```{r, echo = FALSE}
+anime |> 
+  filter(Score > 6 & Score < 7) |> 
+  ggplot(aes(Score))+
+  geom_bar()
+```
 
-Blah Blah
+Here is a better look at the distribution outside of the score 6.51. The scores are centered around 6.2 and is left skewed.
+```{r, echo = FALSE}
+anime |> 
+  filter(Score != 6.51) |> 
+  ggplot(aes(Score))+
+  geom_bar()
+```
+
