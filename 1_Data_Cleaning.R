@@ -59,6 +59,20 @@ adjust <- adjust |>
 
 unique(anime$Genres)
 
+#making binary categorical
+adjust <- adjust |>
+  mutate(PG_13 = as.factor(PG_13),
+         R = as.factor(R),
+         PG = as.factor(PG),
+         R_plus = as.factor(R_plus),
+         G = as.factor(G),
+         manga = as.factor(manga),
+         book = as.factor(book),
+         music = as.factor(music),
+         game = as.factor(game),
+         other = as.factor(other),
+         original = as.factor(original))
+
 
 #cleaned dataset
 clean <- adjust |>
@@ -67,3 +81,4 @@ clean <- adjust |>
 
 #writing out cleaned dataset
 write_csv(clean,"data/clean.csv")
+
