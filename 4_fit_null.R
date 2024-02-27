@@ -44,3 +44,6 @@ null_fit <- null_workflow %>%
 save(null_fit, file = here("results/null_fit.rda"))
 save(fit_folds_null, file = here("results/fit_folds_null.rda"))
 
+load("results/lm_null_table.rda")
+lm_null_table
+

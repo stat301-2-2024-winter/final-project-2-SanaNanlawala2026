@@ -1,0 +1,53 @@
+---
+title: "Progress Memo 2"
+subtitle: |
+  | Final Project 
+  | Data Science 2 with R (STAT 301-2)
+author: "Sana Nanlawala"
+date: today
+
+format:
+  html:
+    toc: true
+    embed-resources: true
+    
+execute:
+  echo: false
+  warning: false
+
+from: markdown+emoji 
+reference-location: margin
+citation-location: margin
+---
+
+## Github Repo Link
+
+[Linked Here](https://github.com/stat301-2-2024-winter/final-project-2-SanaNanlawala2026.git)
+
+
+## Dataset Source
+[Linked Here](https://www.kaggle.com/datasets/dbdmobile/myanimelist-dataset/)
+
+## Data Cleaning
+The dataset needed extensive cleaning. For example, for the duration variable, needed to be converted to just the minutes because the observations were listed either at x min. or x min. per episode. Also, the rating (as in G, PG, etc.) needed to be turned into binary predictors and same for the source of the anime which I ended up grouping some of the categories of sources into its own binary predictor. I turned the binary predictors to factor variables as well. I made sure to keep all the variables in lowercase. I also converted all the unknowns in the predictors to NAs. My outcome variable score had no missingness so I did not need to adjust/filter for that. 
+
+## Analysis Plan
+I am planning to create regression models for the outcome variable 'score', using RMSE to assess these models. I decided to split my dataset with a 0.7 proportion. Currently I plan on doing the null model, linear regression model (lm), random forest models, boosted trees model, ridge, and knn model. Future recipes will include step_interaction() between the number of episode and duration because there may be a relationship with the duration being smaller if the number of episodes increase. I also think there may be an interaction with ranking and number of episodes, because maybe if a show has been running longer, there maybe a better chance of ranking higher. 
+
+## Null Model and Linear Regression Model
+Using a baseline/kitchen sink recipe I have created a null model and an LM model. 
+
+## Assessment Metric Table
+I looked at the results of these two fittings and use RMSE to measure them. Below is a table showing the mean, standard error, and other information regarding the LM and Null models. The LM model has a higher mean RMSE than the null model which makes it a better effective model according to the RMSE metric. This makes sense since the null model is a very "basic" model, especially in comparison to the LM model. 
+
+```{r, echo = FALSE}
+library(here)
+library(tidymodels)
+load(here("results/lm_null_table.rda"))
+lm_null_table
+```
+
+
+## Next Steps
+I plan on of course creating more models that I plan on doing and assessing. I want to do more data exploration regarding any interaction steps that I want to include (including the ones I listed above in my analysis). I also want to explore tuning parameters and see how to adjust them to better fit my models/recipes to tune the models that I create. 
+
