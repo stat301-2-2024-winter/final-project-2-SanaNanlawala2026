@@ -42,10 +42,9 @@ base_rec_trees <-
   step_scale(all_numeric()) |>
   step_impute_mean(all_predictors())
 
-
-  #WORKS !!
-#prep(base_rec_param) |>
+#prep(base_rec_trees) |>
 #  bake(new_data = slice_head(clean_train, n = 5))
+
 
 # Main Complex:
 rec_main <-

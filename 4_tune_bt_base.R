@@ -7,7 +7,7 @@ library(doParallel)
 # load data + recipes
 load("results/clean_split.rda")
 load("results/clean_folds.rda")
-load("results/base_rec_main.rda")
+load("results/base_rec_trees.rda")
 
 set.seed(234)
 num_cores <- parallel::detectCores(logical = TRUE)
@@ -33,12 +33,12 @@ bt_spec <- boost_tree(mode = "regression",
 # define workflows ----
 bt_base_workflow <- workflow() |>
   add_model(bt_spec) |>
-  add_recipe(base_rec_main)
+  add_recipe(base_rec_trees)
 
 # tune hyperparameters -----
 hardhat::extract_parameter_set_dials(bt_spec)
 
-bt_base_learn_rate <- c(0.09,0.11)
+bt_base_learn_rate <- c(0.09, 0.11)
 bt_base_mtry <- c(1, 4)
 bt_base_min_n <- c(2, 7)
 bt_base_params <- extract_parameter_set_dials(bt_spec) %>%
@@ -57,6 +57,7 @@ tuned_bt_base <- tune_grid(bt_base_workflow,
                       control = control_grid(save_workflow = TRUE))
 tuned_bt_base
 stopCluster(cl)
+save(tuned_bt_base, file = here("results/tuned_bt_base.rda"))
 
 
 # testing hyperparameters
@@ -68,7 +69,6 @@ autoplot_bt_base
 bt_base_rmse <- as_workflow_set(
   bt = tuned_bt_base
 )
-
 
 bt_base_rmse |>
   collect_metrics() |>
@@ -83,27 +83,41 @@ bt_base_rmse |>
 
 
 #### Values:
-bt_base_learn_rate <- c(-10,-1)
-bt_base_mtry <- c(1, 4)
-bt_base_min_n <- c(1, 10)
-RMSE = 0.48
-STDERR = 0.0129
+#bt_base_learn_rate <- c(-10,-1)
+#bt_base_mtry <- c(1, 4)
+#bt_base_min_n <- c(1, 10)
+#RMSE = 0.48
+#STDERR = 0.0129
 
-bt_base_learn_rate <- c(-10,-1)
-bt_base_mtry <- c(1, 4)
-bt_base_min_n <- c(2, 40)
-RMSE = 0.48
-STDERR = 0.0112
+#bt_base_learn_rate <- c(-10,-1)
+#bt_base_mtry <- c(1, 4)
+#bt_base_min_n <- c(2, 40)
+#RMSE = 0.48
+#STDERR = 0.0112
 
-bt_base_learn_rate <- c(0.09,0.11)
-bt_base_mtry <- c(1, 4)
-bt_base_min_n <- c(1, 10)
-RMSE = 0.31
-STDERR = 0.0137
+#bt_base_learn_rate <- c(0.09,0.11)
+#bt_base_mtry <- c(1, 4)
+#bt_base_min_n <- c(1, 10)
+#RMSE = 0.31
+#STDERR = 0.0137
 #WINNER!!!
 
-bt_base_learn_rate <- c(0.09,0.11)
-bt_base_mtry <- c(1, 4)
-bt_base_min_n <- c(2, 7)
-RMSE = 0.32
-STDERR = 0.0123
+#bt_base_learn_rate <- c(0.09,0.11)
+#bt_base_mtry <- c(1, 4)
+#bt_base_min_n <- c(2, 7)
+#RMSE = 0.32
+#STDERR = 0.0123
+
+# Finding tuning parameters for the winning model
+tuned_bt_base_params <- tuned_bt_base |>
+  show_best(
+    metric = "rmse") |>
+  slice(1) |>
+  select(mtry, min_n, learn_rate, .metric, mean, std_err)
+
+# finalize workflow
+bt_base_workflow <- bt_base_workflow |>
+  finalize_workflow(select_best(tuned_bt_base, metric = "rmse"))
+bt_base_workflow
+tuned_bt_base_params
+save(tuned_bt_base_params, file = here("exploration_results/tuned_bt_base_params.rda"))
