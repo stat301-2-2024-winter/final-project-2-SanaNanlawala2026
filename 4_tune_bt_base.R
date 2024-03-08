@@ -113,7 +113,8 @@ tuned_bt_base_params <- tuned_bt_base |>
   show_best(
     metric = "rmse") |>
   slice(1) |>
-  select(mtry, min_n, learn_rate, .metric, mean, std_err)
+  select(mtry, min_n, learn_rate, .metric, mean, std_err) |>
+  knitr::kable()
 
 # finalize workflow
 bt_base_workflow <- bt_base_workflow |>

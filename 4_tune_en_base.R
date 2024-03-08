@@ -58,7 +58,7 @@ autoplot_en_base
 
 # retrieve rmse
 en_base_rmse <- as_workflow_set(
-  bt = tuned_en_base
+  en = tuned_en_base
 )
 
 en_base_rmse |>
@@ -88,7 +88,8 @@ tuned_en_base_params <- tuned_en_base |>
   show_best(
     metric = "rmse") |>
   slice(1) |>
-  select(mixture, penalty, .metric, mean, std_err)
+  select(mixture, penalty, .metric, mean, std_err) |>
+  knitr::kable()
 
 # finalize workflow
 en_base_workflow <- en_base_workflow |>

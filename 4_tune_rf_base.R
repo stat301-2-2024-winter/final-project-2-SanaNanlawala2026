@@ -80,7 +80,8 @@ tuned_rf_base_params <- tuned_rf_base |>
   show_best(
     metric = "rmse") |>
   slice(1) |>
-  select(mtry, min_n, .metric, mean, std_err)
+  select(mtry, min_n, .metric, mean, std_err)|>
+  knitr::kable()
 tuned_rf_base_params
 save(tuned_rf_base_params, file = here("exploration_results/tuned_rf_base_params.rda"))
 
