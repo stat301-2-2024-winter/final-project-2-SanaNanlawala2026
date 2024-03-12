@@ -8,8 +8,7 @@ tidymodels_prefer()
 # load data + recipes
 load("results/clean_split.rda")
 load("results/clean_folds.rda")
-load("results/base_rec_trees.rda")
-load("results/base_rec_param.rda")
+load("results/base_rec_main.rda")
 
 set.seed(23456)
 # model specifications ----

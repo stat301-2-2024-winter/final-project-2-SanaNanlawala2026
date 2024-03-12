@@ -7,8 +7,7 @@ library(doParallel)
 # load data + recipes
 load("results/clean_split.rda")
 load("results/clean_folds.rda")
-load("results/base_rec_trees.rda")
-load("results/base_rec_param.rda")
+load("results/base_rec_main.rda")
 
 set.seed(234)
 num_cores <- parallel::detectCores(logical = TRUE)
@@ -28,7 +27,7 @@ null_spec <- null_model() %>%
 
 null_workflow <- workflow() %>%
   add_model(null_spec) %>%
-  add_recipe(base_rec_trees)
+  add_recipe(base_rec_main)
 
 null_workflow
 
@@ -37,13 +36,23 @@ null_fit <- null_workflow %>%
     resamples = clean_folds,
     control = control_resamples(save_workflow = TRUE)
   )
-#keep_pred <- control_resamples(save_pred = TRUE)
-#fit_folds_null <- fit_resamples(null_workflow, resamples = clean_folds, control = control_resamples(save_pred = TRUE))
-#fit_folds_null
+null_fit
+null_fit_rmse <- as_workflow_set(
+  null = null_fit
+)
+
+
+null_fit_rmse |>
+  collect_metrics() |>
+  filter(.metric == "rmse") |>
+  slice_min(mean, by = wflow_id) |>
+  arrange(mean) |>
+  select(`Model Type` = wflow_id,
+         `RMSE` = mean,
+         `Standard Error` = std_err,
+         `Number of Computations` = n) |>
+  knitr::kable(digits = c(NA, 2, 4, 0))
+
 
 save(null_fit, file = here("results/null_fit.rda"))
-save(fit_folds_null, file = here("results/fit_folds_null.rda"))
-
-load("results/lm_null_table.rda")
-lm_null_table
 
