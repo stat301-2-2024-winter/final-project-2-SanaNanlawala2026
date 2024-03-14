@@ -50,9 +50,7 @@ clean |>
   na.omit(clean) |>
   cor(clean$duration, clean$score)
 
-cor(clean[complete.cases(clean), "duration"], clean[complete.cases(clean), "score"])
-
-cor(clean[complete.cases(clean), "ranking"], clean[complete.cases(clean), "score"])
+cor(clean[complete.cases(clean), "ranking"], clean[complete.cases(clean), "episodes"])
 
 cor(clean[complete.cases(clean), "duration"], clean[complete.cases(clean), "ranking"])
 

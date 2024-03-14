@@ -24,4 +24,6 @@ clean_test <- clean_split |>
 
 clean_folds <- vfold_cv(clean_train, v = 5, repeats = 3, strata = score)
 save(clean_train, clean_test, file = "results/clean_split.rda")
+save(clean_train, file = "results/clean_train.rda")
+save(clean_test, file = "results/clean_test.rda")
 save(clean_folds, file = "results/clean_folds.rda")

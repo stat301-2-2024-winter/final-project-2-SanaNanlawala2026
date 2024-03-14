@@ -5,19 +5,20 @@ subtitle: |
   | Data Science 2 with R (STAT 301-2)
 author: "Sana Nanlawala"
 date: today
-
 format:
   html:
+    
     toc: true
     embed-resources: true
-    
 execute:
   echo: false
   warning: false
-
 from: markdown+emoji 
 reference-location: margin
 citation-location: margin
+editor: 
+  markdown: 
+    wrap: sentence
 ---
 
 ::: {.callout-tip icon="false"}
@@ -26,13 +27,40 @@ citation-location: margin
 <https://github.com/stat301-2-2024-winter/final-project-2-SanaNanlawala2026.git>
 :::
 
-## Introduction 
-The purpose of this report focuses on creating a regression model the predicts the score an anime receives, which is essentially a culmination of audience reviews for the show.
+# Introduction
 
-## Data Overview
-The dataset is sourced from Kaggle
+The dataset that this report focuses on is data collected on nearly 15,000 animes.
+Anime is a popular form of entertainment that originates from Japan and the purpose of this report is to focus on creating a **regression** model the predicts the score an anime receives, which is essentially a culmination of audience reviews and ratings for the show.
+Building a predictive model built around the ratings that were given to the animes in this dataset was chosen as a focus of this report because there are a lot of examples of similar models surrounding movies and television in the global west, like the Netflix Prize dataset for modelling user ratings predictions for example.
+It would be interesting to see how it would hold up for anime, which has an entirely demographic of viewers/audience, especially in age and nationality.
 
-## Methods
+# Data Overview
+
+The dataset is sourced from Kaggle and contains 14,949 observations.
+The dependent variable being focused on predicting in this modeling report is the the rating that each anime receives.
+
+# Methods
+
+## Data Splitting
+
+The choice to split the cleaned dataset was done with 70% of the data being subsetted for the training portion of the modeling process and 30% of the data being utilized as the testing data, which after fitting the best, most accurate, predictive model onto the training set, would be used to predict on the testing subset.
+The proportions were ultimately decided for both computational reasons, in that the computer used to run models would be able to handle this, as well as the size of the dataset, which was large enough that allocating 70% of the data to the training set would be sufficient for the model to have enough data to "learn" from.
+Also the proportion on this dataset was chosen best to avoid giving too little data to the training set to avoid issues such as overfitting.
+
+## Different Models
+
+This report explains the performance of six models, where five of them were run on two different recipes.
+Since this is a regression model, the six chosen models used are listed below: - Null Model: This was chosen as a baseline model, using a parametric baseline recipe, with no extreme expectations on its performance.
+- LM Model: The linear regression model was run twice, once on a baseline/kitchen sink recipe, and once on a more complex, feature-engineered recipe.
+- Boosted Tree Model: The boosted tree model was run twice, once on a baseline/kitchen sink recipe, and once on a more complex, feature-engineered recipe.
+- Elastic Net Model: The elastic net model was run twice, once on a baseline/kitchen sink recipe, and once on a more complex, feature-engineered recipe.
+- K-Nearest Neighbors Model: The K-Nearest Neighbors Model was run twice, once on a baseline/kitchen sink recipe, and once on a more complex, feature-engineered recipe.
+- Random Forest Model: The Random Forest Model was run twice, once on a baseline/kitchen sink recipe, and once on a more complex, feature-engineered recipe.
+
+## Recipe Building
+
+### Baseline / Kitchen Sink Recipe: 
+
 
 ## Model Building & Selection
 
@@ -43,5 +71,7 @@ The dataset is sourced from Kaggle
 ## References — if needed
 
 ## Appendix: technical info — if needed
+
 ## Appendix: EDA — if needed
+
 A## ppendix: extras — if needed

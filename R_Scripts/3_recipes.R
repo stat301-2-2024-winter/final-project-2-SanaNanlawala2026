@@ -51,23 +51,22 @@ rec_main <-
   recipe(score ~ ., data = clean_train) |>
   step_rm(name) |>
   step_dummy(all_nominal_predictors()) |>
-  step_center(all_numeric()) |>
-  step_scale(all_numeric()) |>
+  step_center(all_numeric_predictors()) |>
+  step_scale(all_numeric_predictors()) |>
   step_impute_mean(all_predictors()) |>
   step_interact(~ ranking:duration) |>
-  step_interact(~ ranking:score) |>
-  step_interact(~ duration:score)
+  step_interact(~ episodes:ranking)
+
 # Trees Complex:
 rec_trees <-
   recipe(score ~ ., data = clean_train) |>
   step_rm(name) |>
   step_dummy(all_nominal_predictors(), one_hot = TRUE) |>
-  step_center(all_numeric()) |>
-  step_scale(all_numeric()) |>
+  step_center(all_numeric_predictors()) |>
+  step_scale(all_numeric_predictors()) |>
   step_impute_mean(all_predictors())|>
   step_interact(~ ranking:duration) |>
-  step_interact(~ ranking:score) |>
-  step_interact(~ duration:score)
+  step_interact(~ episodes:ranking)
 
 
 
