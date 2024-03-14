@@ -91,10 +91,6 @@ tuned_en_base_params <- tuned_en_base |>
   select(mixture, penalty, .metric, mean, std_err) |>
   knitr::kable()
 
-# finalize workflow
-en_base_workflow <- en_base_workflow |>
-  finalize_workflow(select_best(tuned_en_base, metric = "rmse"))
-en_base_workflow
 tuned_en_base_params
 save(tuned_en_base_params, file = here("exploration_results/tuned_en_base_params.rda"))
 

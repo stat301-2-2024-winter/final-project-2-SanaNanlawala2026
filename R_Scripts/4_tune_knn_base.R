@@ -80,3 +80,4 @@ tuned_knn_base_params <- tuned_knn_base |>
   select(neighbors, .metric, mean, std_err) |>
   knitr::kable()
 tuned_knn_base_params
+save(tuned_knn_base_params, file = here("exploration_results/tuned_knn_base_params.rda"))

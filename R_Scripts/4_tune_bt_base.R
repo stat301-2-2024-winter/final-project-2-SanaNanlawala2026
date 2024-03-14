@@ -116,9 +116,5 @@ tuned_bt_base_params <- tuned_bt_base |>
   select(mtry, min_n, learn_rate, .metric, mean, std_err) |>
   knitr::kable()
 
-# finalize workflow
-bt_base_workflow <- bt_base_workflow |>
-  finalize_workflow(select_best(tuned_bt_base, metric = "rmse"))
-bt_base_workflow
 tuned_bt_base_params
 save(tuned_bt_base_params, file = here("exploration_results/tuned_bt_base_params.rda"))

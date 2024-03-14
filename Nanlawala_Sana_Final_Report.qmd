@@ -1,0 +1,47 @@
+---
+title: "Final Report"
+subtitle: |
+  | Final Project 
+  | Data Science 2 with R (STAT 301-2)
+author: "Sana Nanlawala"
+date: today
+
+format:
+  html:
+    toc: true
+    embed-resources: true
+    
+execute:
+  echo: false
+  warning: false
+
+from: markdown+emoji 
+reference-location: margin
+citation-location: margin
+---
+
+::: {.callout-tip icon="false"}
+## Github Repo Link
+
+<https://github.com/stat301-2-2024-winter/final-project-2-SanaNanlawala2026.git>
+:::
+
+## Introduction 
+The purpose of this report focuses on creating a regression model the predicts the score an anime receives, which is essentially a culmination of audience reviews for the show.
+
+## Data Overview
+The dataset is sourced from Kaggle
+
+## Methods
+
+## Model Building & Selection
+
+## Final Model Analysis
+
+## Conclusion
+
+## References — if needed
+
+## Appendix: technical info — if needed
+## Appendix: EDA — if needed
+A## ppendix: extras — if needed

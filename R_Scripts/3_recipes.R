@@ -54,9 +54,9 @@ rec_main <-
   step_center(all_numeric()) |>
   step_scale(all_numeric()) |>
   step_impute_mean(all_predictors()) |>
-  step_interact(~ episodes:duration) |>
-  step_interact(~ ranking:episodes)
-
+  step_interact(~ ranking:duration) |>
+  step_interact(~ ranking:score) |>
+  step_interact(~ duration:score)
 # Trees Complex:
 rec_trees <-
   recipe(score ~ ., data = clean_train) |>
@@ -65,8 +65,11 @@ rec_trees <-
   step_center(all_numeric()) |>
   step_scale(all_numeric()) |>
   step_impute_mean(all_predictors())|>
-  step_interact(~ episodes:duration) |>
-  step_interact(~ ranking:episodes)
+  step_interact(~ ranking:duration) |>
+  step_interact(~ ranking:score) |>
+  step_interact(~ duration:score)
+
+
 
 
 # Save it all out

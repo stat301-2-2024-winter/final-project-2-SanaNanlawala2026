@@ -10,6 +10,7 @@ set.seed(22)
 tidymodels_prefer()
 
 clean <- read_csv("data/clean.csv")
+unique(clean$type)
 
 #split the data
 clean_split <- clean |>
