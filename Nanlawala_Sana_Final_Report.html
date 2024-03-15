@@ -3151,7 +3151,7 @@ Github Repo Link
 <section id="feature-engineered-recipe" class="level3">
 <h3 class="anchored" data-anchor-id="feature-engineered-recipe">Feature Engineered Recipe:</h3>
 <p>The feature engineered recipes were made for both trees and parametric models but the only difference was as mentioned above, with the one-hot encoding for the dummy variables. The main focus of the feature engineering was creating interaction between predictors. Part of the EDA process was to find correlations between predictors, specifically the number of episodes, the duration of each episodes, and the ranking. There was a high correlation with with the ranking and score, which makes sense as a score given to anime should likely correlate to the ranking its given as well. However, it was not included in the recipe as the predictions would not have included the outcome/target variable anyway.</p>
-<p>There was a correlation of -0.2054627 between the duration of each episodes and the ranking. While this is not a high correlation, studies have shown that shorter length episodes are becoming the norm as more and more people have shorter attention spans. This was previously more common in children television, which is the primary audience of anime, but is now also becoming more common in adult television as well. Therefore the interaction between the two variables were included in the feature engineering part of the recipe.</p>
+<p>There was a correlation of -0.2054627 between the duration of each episodes and the ranking. While this is not a high correlation, studies have shown that shorter length episodes are becoming the norm as more and more people have shorter attention spans. This was previously more common in children television, which is the primary audience of anime, but is now also becoming more common in adult television as well (Jones Medium). Therefore the interaction between the two variables were included in the feature engineering part of the recipe. More information on this study is located in the references section at the bottom of this report.</p>
 <p>The correlation between ranking and number of episodes was 0.005810827 which shows almost no correlation. However, the feature engineered recipe still included a step that correlatted and focused on the interaction between the ranking of the anime and the number of episodes because generally, well-liked television tends to run for longer seasons, and therefore more episodes, as production companies continue to air the show.</p>
 </section>
 </section>
@@ -3701,6 +3701,9 @@ Github Repo Link
 </section>
 <section id="references" class="level1">
 <h1>References:</h1>
+<p>Sajid. “Anime Dataset 2023.” Kaggle, 28 July 2023, www.kaggle.com/datasets/dbdmobile/myanimelist-dataset?select=anime-filtered.csv.</p>
+<p>Watson, Leon. “Humans Have Shorter Attention Span than Goldfish, Thanks to Smartphones.” The Telegraph, Telegraph Media Group, 12 Mar. 2016, www.telegraph.co.uk/science/2016/03/12/humans-have-shorter-attention-span-than-goldfish-thanks-to-smart/.</p>
+<p>Writer, Jones the. “How Long Should TV Shows Be? The Rise of Shorter TV.” Medium, Medium, 24 Nov. 2019, joneswriter.medium.com/how-long-should-tv-shows-be-the-rise-of-shorter-tv-6f23a83d572d.</p>
 </section>
 
 </main>

@@ -143,8 +143,8 @@ However, it was not included in the recipe as the predictions would not have inc
 
 There was a correlation of -0.2054627 between the duration of each episodes and the ranking.
 While this is not a high correlation, studies have shown that shorter length episodes are becoming the norm as more and more people have shorter attention spans.
-This was previously more common in children television, which is the primary audience of anime, but is now also becoming more common in adult television as well.
-Therefore the interaction between the two variables were included in the feature engineering part of the recipe.
+This was previously more common in children television, which is the primary audience of anime, but is now also becoming more common in adult television as well (Jones Medium).
+Therefore the interaction between the two variables were included in the feature engineering part of the recipe. More information on this study is located in the references section at the bottom of this report. 
 
 The correlation between ranking and number of episodes was 0.005810827 which shows almost no correlation.
 However, the feature engineered recipe still included a step that correlatted and focused on the interaction between the ranking of the anime and the number of episodes because generally, well-liked television tends to run for longer seasons, and therefore more episodes, as production companies continue to air the show.
@@ -544,10 +544,10 @@ In conclusion, the predictive modeling approach applied to anime show scores yie
 Overall, this analysis not only provides valuable insights into the determinants of anime scores but also underscores the applicability of data science techniques in deciphering audience preferences within the anime industry. By leveraging advanced modeling approaches and rigorous methodology, this study sets the stage for further exploration and refinement, paving the way for continued advancements in predictive analytics within the realm of anime show scoring prediction.
 
 
-
-
-
-
-
 # References:  
+Sajid. “Anime Dataset 2023.” Kaggle, 28 July 2023, www.kaggle.com/datasets/dbdmobile/myanimelist-dataset?select=anime-filtered.csv. 
+
+Watson, Leon. “Humans Have Shorter Attention Span than Goldfish, Thanks to Smartphones.” The Telegraph, Telegraph Media Group, 12 Mar. 2016, www.telegraph.co.uk/science/2016/03/12/humans-have-shorter-attention-span-than-goldfish-thanks-to-smart/. 
+
+Writer, Jones the. “How Long Should TV Shows Be? The Rise of Shorter TV.” Medium, Medium, 24 Nov. 2019, joneswriter.medium.com/how-long-should-tv-shows-be-the-rise-of-shorter-tv-6f23a83d572d. 
 
