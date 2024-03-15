@@ -1,0 +1,4 @@
+Contains progress memos from the final project! 
+
+- Progress Memo 1 (in html and qmd)
+- Progress Memo 2 (in html and qmd)

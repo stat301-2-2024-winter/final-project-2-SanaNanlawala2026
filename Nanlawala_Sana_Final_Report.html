@@ -9,7 +9,7 @@
 <meta name="author" content="Sana Nanlawala">
 <meta name="dcterms.date" content="2024-03-14">
 
-<title>Final Report</title>
+<title>Unlocking Insights: Predictive Modeling of Anime Show Scores</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -3018,12 +3018,8 @@ vertical-align: -.125em;
   </ul></li>
   <li><a href="#model-building-selection" id="toc-model-building-selection" class="nav-link" data-scroll-target="#model-building-selection">Model Building &amp; Selection:</a></li>
   <li><a href="#final-model-analysis" id="toc-final-model-analysis" class="nav-link" data-scroll-target="#final-model-analysis">Final Model Analysis:</a></li>
-  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion:</a>
-  <ul class="collapse">
-  <li><a href="#references-if-needed" id="toc-references-if-needed" class="nav-link" data-scroll-target="#references-if-needed">References — if needed</a></li>
-  <li><a href="#appendix-technical-info-if-needed" id="toc-appendix-technical-info-if-needed" class="nav-link" data-scroll-target="#appendix-technical-info-if-needed">Appendix: technical info — if needed</a></li>
-  <li><a href="#appendix-eda-if-needed" id="toc-appendix-eda-if-needed" class="nav-link" data-scroll-target="#appendix-eda-if-needed">Appendix: EDA — if needed</a></li>
-  </ul></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion:</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References:</a></li>
   </ul>
 </nav>
 </div>
@@ -3031,7 +3027,7 @@ vertical-align: -.125em;
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Final Report</h1>
+<h1 class="title">Unlocking Insights: Predictive Modeling of Anime Show Scores</h1>
 <p class="subtitle lead"></p><p>Final Project<br>
 Data Science 2 with R (STAT 301-2)</p><p></p>
 </div>
@@ -3070,7 +3066,7 @@ Github Repo Link
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p><a href="https://github.com/stat301-2-2024-winter/final-project-2-SanaNanlawala2026.git" class="uri">https://github.com/stat301-2-2024-winter/final-project-2-SanaNanlawala2026.git</a></p>
+<p><a href="https://github.com/stat301-2-2024-winter/final-project-2-SanaNanlawala2026.git">This is the github repository containing all details and work related to this report.</a></p>
 </div>
 </div>
 <section id="introduction" class="level1">
@@ -3169,6 +3165,7 @@ Github Repo Link
 </section>
 <section id="tuning" class="level2">
 <h2 class="anchored" data-anchor-id="tuning">Tuning</h2>
+<p>The tuning process for each model required the creation of a tuning grid. For the sake of computational efficiency, a tuning grid with five levels was chosen.</p>
 <p>The models where hyperparameter-tuning was focused on are detailed below. The two linear models and the null model did not have any hyperparameters that were tuned or updated.</p>
 <section id="elastic-net-model" class="level3">
 <h3 class="anchored" data-anchor-id="elastic-net-model">Elastic Net Model</h3>
@@ -3349,7 +3346,7 @@ Github Repo Link
 <section id="random-forest-model" class="level3">
 <h3 class="anchored" data-anchor-id="random-forest-model">Random Forest Model</h3>
 <p><em>Kitchen Sink</em></p>
-<p>The parameters that were tuned for the random forest model were the minimal node size (min_n) and the number of predictors to try at each split when constructing a decision tree within the random forest (mtry). The iterations of tuning were done first on the model using the kitchen sink recipe, then the optimal ranges were used on the feature-engineered model. On the first round of tuning, default ranges were fitted into the model:</p>
+<p>The parameters that were tuned for the random forest model were the minimal node size (min_n) and the number of predictors to try at each split when constructing a decision tree within the random forest (mtry). The number of trees was also a point of tuning, but was not explored within this report due to computational reasons, and was therefore kept at a constant of 1000 trees, to maximize the efficiency of run time for each fitting of the model. The iterations of tuning were done first on the model using the kitchen sink recipe, then the optimal ranges were used on the feature-engineered model. On the first round of tuning, default ranges were fitted into the model:</p>
 <ul>
 <li>min_n (Minimal Node Size) : (1,10)</li>
 <li>mtry (Randomly Selected Predictors) : (1,5)</li>
@@ -3664,6 +3661,7 @@ Github Repo Link
 </div>
 </div>
 </div>
+<p><a href="#fig-scatterplot">Figure 15</a> shows how nearly all the predicted values were accurate with a line of best fit that shows the actual score equals the predicted score!</p>
 <p><a href="#tbl-evaluation">Table 11</a> shows the performance metrics of RMSE, R^2 (R-Squared), and MAE (Mean Absolute Error) on the final model!</p>
 <div class="cell">
 <div class="cell-output-display">
@@ -3698,15 +3696,11 @@ Github Repo Link
 </section>
 <section id="conclusion" class="level1">
 <h1>Conclusion:</h1>
-<section id="references-if-needed" class="level2">
-<h2 class="anchored" data-anchor-id="references-if-needed">References — if needed</h2>
+<p>In conclusion, the predictive modeling approach applied to anime show scores yields promising results, with the Random Forest model outperforming other models. This analysis provides valuable insights into the factors influencing anime scores and demonstrates the applicability of data science techniques in understanding audience preferences in the anime industry. The steps taken in feature engineering and tuning the parameters also played a positive role in affecting the performance of the models, paving the way for further avenues of exploration that was not addressed in this report! Examining other parameters, such as the number of trees (especially since the winning model was a random forest model) is one thing to further explore. Adjusting the levels of the tuning grid may also be an option, especially by increasing the number. Another avenue may be looking into more complex recipes with feature engineering that looks at more interactions or possible transformations!</p>
+<p>Overall, this analysis not only provides valuable insights into the determinants of anime scores but also underscores the applicability of data science techniques in deciphering audience preferences within the anime industry. By leveraging advanced modeling approaches and rigorous methodology, this study sets the stage for further exploration and refinement, paving the way for continued advancements in predictive analytics within the realm of anime show scoring prediction.</p>
 </section>
-<section id="appendix-technical-info-if-needed" class="level2">
-<h2 class="anchored" data-anchor-id="appendix-technical-info-if-needed">Appendix: technical info — if needed</h2>
-</section>
-<section id="appendix-eda-if-needed" class="level2">
-<h2 class="anchored" data-anchor-id="appendix-eda-if-needed">Appendix: EDA — if needed</h2>
-</section>
+<section id="references" class="level1">
+<h1>References:</h1>
 </section>
 
 </main>

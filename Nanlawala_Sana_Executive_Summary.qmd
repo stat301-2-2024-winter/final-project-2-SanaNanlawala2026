@@ -1,0 +1,103 @@
+---
+title: "Executive Summary: Predictive Modeling of Anime Show Scores"
+subtitle: |
+  | Final Project 
+  | Data Science 2 with R (STAT 301-2)
+author: "Sana Nanlawala"
+date: today
+format:
+  html:
+    
+    toc: true
+    embed-resources: true
+execute:
+  echo: false
+  warning: false
+from: markdown+emoji 
+reference-location: margin
+citation-location: margin
+editor: 
+  markdown: 
+    wrap: sentence
+---
+
+::: {.callout-tip icon="false"}
+## Github Repo Link
+
+[This is the github repository containing all details and work related to this report.](https://github.com/stat301-2-2024-winter/final-project-2-SanaNanlawala2026.git)
+:::
+
+This executive summary provides an overview of the final report on predictive modeling of anime show scores conducted by Sana Nanlawala. The report focuses on building regression models to predict the scores received by anime shows based on various features. The dataset used in this analysis comprises nearly 15,000 anime observations sourced from Kaggle.
+
+# Overview and Purpose of Predictive Modeling: 
+
+After doing initial exploratory data analysis on data collected on nearly 15,000 anime series’ and movies, the direction of this report took to predictive modeling on the outcome variable collected in this dataset, which was the score given by anime-watchers to each show/movie. This was selected as the target of the report because of all the other variables measured in this data collection, the score seemed to be most reliant on other factors such as the genre, length, and other more objective variables. This being measured on opinions of viewers seemed to be the driving factor of doing a regression analysis on the scores of each anime. 
+
+Initial exploration of the target variable, anime scores, reveals a distribution predominantly centered around scores between 6 and 7.5. Missingness analysis indicates no missing values in the target variable but some missing data in other predictor variables, which are addressed through imputation in the modeling process.
+
+
+# Methods: 
+
+In this report, six regression models were evaluated: Null Model, Linear Regression (LM), Boosted Tree, Elastic Net, K-Nearest Neighbors (KNN), and Random Forest. The latter five are fitted using both baseline and feature-engineered recipes to compare performance, for a total of eleven models. The null model serves as a baseline.
+
+As the first step of the modeling process, the dataset, after being cleaned, was split into 70% training data and 30% testing data, ensuring sufficient data for model learning while avoiding overfitting. V-fold cross-validation with five folds and three repetitions was employed as the resampling to evaluate model performance and tune hyperparameters. Computation efficiency was also taken into consideration when choosing the number of folds and repeats. To measure the performance of each of the models, Root Mean Squared Error (RMSE) was chosen as the performance metric to assess the accuracy of predicted scores compared to actual scores. 
+
+Four recipes were created. Two of these recipes were made for tree-based models while the other two were made for other, parametric models. The only distinction between tree-based and parametric was one-hot encoding the dummy variables which is better in tuned with tree models. Each type of recipe (tree/parametric) was made with into a kitchen sink recipe and a more complex one with feature engineering. The kitchen sink recipe normalized the numeric variables by scaling and centering them (which removes the mean value from each variable and makes it so that the standard deviation is 1). Any identification related variables were also removed such as the title of the anime. The missingness that was explored earlier was imputed with the mean values of the corresponding variable. Feature engineering took the kitchen sink recipe a step further by introducing interactions between correlated predictors that were researched to be related. These variables included the duration of each episode, the number of episodes, and the rankings of episodes. 
+
+Models with tunable hyperparameters were optimized using cross-validation to identify the parameter values that minimize RMSE. The process of tuning involved updating and evaluating the parameters from autoplots that summarized performance on models fitted onto the v-folds using the baseline recipe. The tuning process for each model also required the creation of a tuning grid. For the sake of computational efficiency, a tuning grid with five levels was chosen. Following that, the optimal ranges were explored onto the feature engineered models and best tuning parameters were collected for each model. 
+
+# Model Building & Selection:
+
+Random Forest with the feature-engineered recipe emerged as the best-performing model, exhibiting the lowest RMSE. Below, @tbl-rmse shows the RMSE values for each model: 
+
+```{r, echo=FALSE}
+#| label: tbl-rmse
+#| tbl-cap: RMSE Table
+library(here)
+load(here("results/RMSE_table.rda"))
+RMSE_table
+```
+
+@tbl-rmse not only shows the lowest RMSE being evaluated from the random forest model fitted with the feature engineering recipe, but shows that having a feature-engineered recipe made a significant difference in predicting accurate scores for the anime as each type model had a better performing model when fit on the feature-engineered recipe. @tbl-params shows the best tuning parameters for this model. 
+
+```{r, echo = FALSE}
+#| label: tbl-params
+#| tbl-cap: Final Model Parameters
+library(knitr)
+library(tidyverse)
+load(here("exploration_results/tuned_rf_params.rda"))
+tuned_rf_params|> 
+  rename("RMSE value" = "mean") |> 
+  rename("Standard Error" = std_err) |> 
+  select("RMSE value", min_n, mtry, "Standard Error") |> 
+  kable()
+```
+
+The best minimal node size for this model would be 7 while the number of randomly selected predictors (or mtry) is 13 which is nearly 90% of the number of predictors used in the modeling process.
+
+This final fitting was then use to test on the testing data and create predicted values to compare with. @fig-scatterplot shows a scatterplot comparing the predicted values versus the actual values of the anime score on the testing data. 
+```{r, echo = FALSE}
+#| label: fig-scatterplot
+#| fig-cap: Prediction Accuracy of Final Model 
+load(here("results/scatterplot.rda"))
+scatterplot
+```
+@fig-scatterplot shows how nearly all the predicted values were accurate with a line of best fit that shows the actual score equals the predicted score! 
+
+@tbl-evaluation shows the performance metrics of RMSE, R\^2 (R-Squared), and MAE (Mean Absolute Error) on the final model!
+
+```{r, echo = FALSE}
+#| label: tbl-evaluation
+#| tbl-cap: Final Model Metrics Performance
+load(here("results/evaluation_table.rda"))
+evaluation_table
+```
+
+The results of these performance metrics are surprisingly well performing, with a very low RMSE value of 0.107, (still low in comparison to the other models), meaning the predicted values are not far off from the actual values of the testing data.
+The R\^2 value, which ranges from 0-1, is 0.98 which means it explains almost all of the variability of the data around its mean.
+MAE is similar to RMSE in that the units are the same as the score the anime received and evaluates the average absolute difference between the predicted values and the actual values in the dataset.
+Since the MAE value was extremely small, at 0.01, this is a good performance of the model as the difference between the predicted values and the actual values was small.
+
+# Conclusion: 
+
+In conclusion, the predictive modeling approach applied to anime show scores yields promising results, with the Random Forest model outperforming other models. This analysis provides valuable insights into the factors influencing anime scores and demonstrates the applicability of data science techniques in understanding audience preferences in the anime industry. The steps taken in feature engineering and tuning the parameters also played a positive role in affecting the performance of the models, paving the way for further avenues of exploration that was not addressed in this report! Examining other parameters, such as the number of trees (especially since the winning model was a random forest model) is one thing to further explore. Adjusting the levels of the tuning grid may also be an option, especially by increasing the number. Another avenue may be looking into more complex recipes with feature engineering that looks at more interactions or possible transformations! 

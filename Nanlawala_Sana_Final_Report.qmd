@@ -1,5 +1,5 @@
 ---
-title: "Final Report"
+title: "Unlocking Insights: Predictive Modeling of Anime Show Scores"
 subtitle: |
   | Final Project 
   | Data Science 2 with R (STAT 301-2)
@@ -24,7 +24,7 @@ editor:
 ::: {.callout-tip icon="false"}
 ## Github Repo Link
 
-<https://github.com/stat301-2-2024-winter/final-project-2-SanaNanlawala2026.git>
+[This is the github repository containing all details and work related to this report.](https://github.com/stat301-2-2024-winter/final-project-2-SanaNanlawala2026.git)
 :::
 
 ```{r, echo = FALSE}
@@ -166,6 +166,7 @@ Its units are the units of the outcome being predicted, which in this case is th
 The best model is chosen by having the lowest RMSE value, indicating the predicted values of the model are close to the actual values (an therefore a smaller error).
 
 ## Tuning
+The tuning process for each model required the creation of a tuning grid. For the sake of computational efficiency, a tuning grid with five levels was chosen. 
 
 The models where hyperparameter-tuning was focused on are detailed below.
 The two linear models and the null model did not have any hyperparameters that were tuned or updated.
@@ -318,7 +319,7 @@ tuned_knn_params|>
 
 *Kitchen Sink*
 
-The parameters that were tuned for the random forest model were the minimal node size (min_n) and the number of predictors to try at each split when constructing a decision tree within the random forest (mtry).
+The parameters that were tuned for the random forest model were the minimal node size (min_n) and the number of predictors to try at each split when constructing a decision tree within the random forest (mtry). The number of trees was also a point of tuning, but was not explored within this report due to computational reasons, and was therefore kept at a constant of 1000 trees, to maximize the efficiency of run time for each fitting of the model.
 The iterations of tuning were done first on the model using the kitchen sink recipe, then the optimal ranges were used on the feature-engineered model.
 On the first round of tuning, default ranges were fitted into the model:
 
@@ -538,9 +539,15 @@ MAE is similar to RMSE in that the units are the same as the score the anime rec
 Since the MAE value was extremely small, at 0.01, this is a good performance of the model as the difference between the predicted values and the actual values was small.
 
 # Conclusion:
+In conclusion, the predictive modeling approach applied to anime show scores yields promising results, with the Random Forest model outperforming other models. This analysis provides valuable insights into the factors influencing anime scores and demonstrates the applicability of data science techniques in understanding audience preferences in the anime industry. The steps taken in feature engineering and tuning the parameters also played a positive role in affecting the performance of the models, paving the way for further avenues of exploration that was not addressed in this report! Examining other parameters, such as the number of trees (especially since the winning model was a random forest model) is one thing to further explore. Adjusting the levels of the tuning grid may also be an option, especially by increasing the number. Another avenue may be looking into more complex recipes with feature engineering that looks at more interactions or possible transformations! 
 
-## References — if needed
+Overall, this analysis not only provides valuable insights into the determinants of anime scores but also underscores the applicability of data science techniques in deciphering audience preferences within the anime industry. By leveraging advanced modeling approaches and rigorous methodology, this study sets the stage for further exploration and refinement, paving the way for continued advancements in predictive analytics within the realm of anime show scoring prediction.
 
-## Appendix: technical info — if needed
 
-## Appendix: EDA — if needed
+
+
+
+
+
+# References:  
+

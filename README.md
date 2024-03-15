@@ -18,3 +18,4 @@ Folders:
 Other Files:
 
 Contains the final report combining all of the work, both in qmd and html format! 
+Also contains the executive summary, both in qmd and html format! 

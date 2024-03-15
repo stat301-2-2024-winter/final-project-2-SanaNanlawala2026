@@ -1,0 +1,6 @@
+Contains all figures and parameters saved out from R Scripts used to inform the tuning process as well as EDA and feature engineering!
+
+- autoplots of all models that were tuned (8 models were tuned)
+- Missingness plot showing the missingness in the cleaned dataset
+- Explorations of the outcome variable, 'score'
+- All the best tuned parameters for each model. 

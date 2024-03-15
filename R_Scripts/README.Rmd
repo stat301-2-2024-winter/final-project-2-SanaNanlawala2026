@@ -1,0 +1,12 @@
+Contains all the R Scripts used to create this report
+
+0-Data_Cleaning: Focuses on cleaning the data, especially converting a number of variables into binary predictors.
+1_Initial_Exploartion: EDA on data and outcome to inform decisions made in making the recipes
+2_Initial_Setup: Splits the data into training, testing, and v-folds
+3_recipes: Creates 4 recipes for tree-based and parametric models.
+4_xxx: Contains ALL fittings of each model on baseline recipe (Total of Six Models)
+5_xxx: Contains ALL fittings of each model on feature engineered recipe (Total of 5 Models)
+6_model_analysis: collects RMSE's of all eleven models
+7_Training_Best_Model: Fits winning model onto training/testing data
+8_Assessing_Best_Model: Creates scatterplot of predicted values and actual values, and also collects other performance metrics on final fit (R^2 and MAE)
+

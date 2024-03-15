@@ -1,0 +1,11 @@
+Contains ALL results saved out from R-Scripts
+
+- Contains all the splitted data (folds, training, testing)
+- Contains the four different recipes
+- Contains all the eleven fits/models
+- Contains the best paramaters and their corresponding RMSE values for each model
+- Contains the table of all RMSE values (RMSE_table.rda)
+- Contains the final fit onto the winning model (final_fit.rda)
+- Contains the predictions made onto the testing data (final_predict.rda)
+- Contains the evaluation of the final model on other performance metrics (RMSE, R^2, and MAE) (evaluation_table.rda)
+- Contains scatterplot of the predicted values vs the actual values (scatterplot.rda)
