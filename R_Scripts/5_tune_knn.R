@@ -32,7 +32,7 @@ knn_workflow <- workflow() |>
 
 # tune hyperparameters -----
 hardhat::extract_parameter_set_dials(knn_spec)
-knn_neighbors <- c(1, 10)
+knn_neighbors <- c(3, 10)
 knn_params <- extract_parameter_set_dials(knn_spec) %>%
   update(neighbors = neighbors(knn_neighbors))
 
@@ -50,8 +50,12 @@ stopCluster(cl)
 save(tuned_knn, file = here("results/tuned_knn.rda"))
 
 autoplot_knn <- autoplot(tuned_knn, metric = "rmse")
-save(autoplot_knn, file = here("exploration_results/autoplot_knn2.rda"))
-autoplot_knn
+autoplot_knn_2 <- autoplot(tuned_knn, metric = "rmse")
+
+save(autoplot_knn, file = here("exploration_results/autoplot_knn_two.rda"))
+autoplot_knn_2
+save(autoplot_knn_2, file = here("exploration_results/autoplot_knn_2.rda"))
+
 # 1st iteration
 #update neighbours to be (1,10)
 
@@ -76,8 +80,7 @@ tuned_knn_params <- tuned_knn|>
   show_best(
     metric = "rmse") |>
   slice(1) |>
-  select(neighbors, .metric, mean, std_err) |>
-  knitr::kable()
+  select(neighbors, .metric, mean, std_err)
 tuned_knn_params
 save(tuned_knn_params, file = here("exploration_results/tuned_knn_params.rda"))
 

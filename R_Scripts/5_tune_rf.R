@@ -61,7 +61,6 @@ autoplot_rf <-autoplot(tuned_rf, metric = "rmse")
 save(autoplot_rf, file = here("exploration_results/autoplot_rf.rda"))
 autoplot_rf
 
-# Values
 # retrieve rmse
 rf_rmse <- as_workflow_set(
   knn = tuned_rf
@@ -83,8 +82,6 @@ tuned_rf_params <- tuned_rf |>
   show_best(
     metric = "rmse") |>
   slice(1) |>
-  select(mtry, min_n, .metric, mean, std_err)|>
-  knitr::kable()
+  select(mtry, min_n, .metric, mean, std_err)
 tuned_rf_params
 save(tuned_rf_params, file = here("exploration_results/tuned_rf_params.rda"))
-

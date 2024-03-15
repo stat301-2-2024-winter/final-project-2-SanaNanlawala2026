@@ -36,7 +36,7 @@ rf_base_workflow <- workflow() |>
 # tune hyperparameters -----
 hardhat::extract_parameter_set_dials(rf_spec)
 
-rf_base_mtry <- c(1, 17)
+rf_base_mtry <- c(1, 15)
 rf_base_min_n <- c(1, 10)
 rf_base_params <- extract_parameter_set_dials(rf_spec) %>%
   update(mtry = mtry(rf_base_mtry)) |>
@@ -62,17 +62,14 @@ save(autoplot_rf_base, file = here("exploration_results/autoplot_rf_base4.rda"))
 autoplot_rf_base
 
 # Values
+
+# Round 1
 #rf_base_mtry <- c(1, 5)
 #rf_base_min_n <- c(1, 10)
-# rmse = 0.312 stderr = 0.00543
 
-#rf_base_mtry <- c(1, 12)
+# Round 2
+#rf_base_mtry <- c(1, 15)
 #rf_base_min_n <- c(1, 10)
-# rmse = 0.12 stderr = 0.0130
-
-#rf_base_mtry <- c(1, 17)
-#rf_base_min_n <- c(1, 10)
-# rmse = 0.119 stderr = 0.0134
 #WINNER: mtry = 13, min_n = 7
 
 ## collect RMSE
@@ -80,8 +77,9 @@ tuned_rf_base_params <- tuned_rf_base |>
   show_best(
     metric = "rmse") |>
   slice(1) |>
-  select(mtry, min_n, .metric, mean, std_err)|>
-  knitr::kable()
+  select(mtry, min_n, .metric, mean, std_err)
 tuned_rf_base_params
 save(tuned_rf_base_params, file = here("exploration_results/tuned_rf_base_params.rda"))
+
+
 

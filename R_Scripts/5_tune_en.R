@@ -78,8 +78,7 @@ tuned_en_params <- tuned_en |>
   show_best(
     metric = "rmse") |>
   slice(1) |>
-  select(penalty, mixture, .metric, mean, std_err) |>
-  knitr::kable()
+  select(penalty, mixture, .metric, mean, std_err)
 tuned_en_params
 
 save(tuned_en_params, file = here("exploration_results/tuned_en_params.rda"))

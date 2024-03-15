@@ -1,5 +1,6 @@
 library(ggplot2)
 library(tidyverse)
+library(naniar)
 
 anime <- read_csv("data/anime-filtered.csv")
 clean <- read_csv("data/clean.csv")
@@ -54,9 +55,30 @@ cor(clean[complete.cases(clean), "ranking"], clean[complete.cases(clean), "episo
 
 cor(clean[complete.cases(clean), "duration"], clean[complete.cases(clean), "ranking"])
 
-step_interact(~ episodes:duration) |>
-  #  step_interact(~ ranking:episodes)
 
+missingness_plot <- clean |>
+  select(episodes, ranking, duration) |>
+  vis_miss() +
+  labs(title = "Missingness in Data", x = "Variables")
+
+missingness_plot
+save(missingness_plot, file = here("exploration_results/missingness_plot.rda"))
+
+initial_score_exploration <- clean |>
+  ggplot(aes(score))+
+  geom_histogram() +
+  labs(title = "Preliminary Exploration of Target Distribution (Score) ")
+initial_score_exploration
+save(initial_score_exploration, file = here("exploration_results/initial_score_exploration.rda"))
+
+
+second_score_exploration <- clean |>
+  filter(score != 6.51) |>
+  ggplot(aes(score))+
+  geom_histogram() +
+  labs(title = "Closer Exploration of Target Distribution (Score)")
+second_score_exploration
+save(second_score_exploration, file = here("exploration_results/second_score_exploration.rda"))
 
 clean |>
   filter(episodes < 200) |>

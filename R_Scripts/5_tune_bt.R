@@ -87,8 +87,7 @@ tuned_bt_params <- tuned_bt |>
   show_best(
     metric = "rmse") |>
   slice(1) |>
-  select(mtry, min_n, learn_rate, .metric, mean, std_err) |>
-  knitr::kable()
+  select(mtry, min_n, learn_rate, .metric, mean, std_err)
 tuned_bt_params
 
 save(tuned_bt_params, file = here("exploration_results/tuned_bt_params.rda"))

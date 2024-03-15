@@ -77,7 +77,6 @@ tuned_knn_base_params <- tuned_knn_base |>
   show_best(
     metric = "rmse") |>
   slice(1) |>
-  select(neighbors, .metric, mean, std_err) |>
-  knitr::kable()
+  select(neighbors, .metric, mean, std_err)
 tuned_knn_base_params
 save(tuned_knn_base_params, file = here("exploration_results/tuned_knn_base_params.rda"))

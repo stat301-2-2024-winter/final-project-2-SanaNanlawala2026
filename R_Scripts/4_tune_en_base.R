@@ -88,8 +88,7 @@ tuned_en_base_params <- tuned_en_base |>
   show_best(
     metric = "rmse") |>
   slice(1) |>
-  select(mixture, penalty, .metric, mean, std_err) |>
-  knitr::kable()
+  select(penalty, mixture, .metric, mean, std_err)
 
 tuned_en_base_params
 save(tuned_en_base_params, file = here("exploration_results/tuned_en_base_params.rda"))

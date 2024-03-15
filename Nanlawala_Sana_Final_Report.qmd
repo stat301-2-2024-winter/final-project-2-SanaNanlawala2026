@@ -27,19 +27,56 @@ editor:
 <https://github.com/stat301-2-2024-winter/final-project-2-SanaNanlawala2026.git>
 :::
 
-# Introduction
+```{r, echo = FALSE}
+library(ggplot2)
+library(tidyverse)
+library(here)
+library(knitr)
+```
+
+# Introduction:
 
 The dataset that this report focuses on is data collected on nearly 15,000 animes.
 Anime is a popular form of entertainment that originates from Japan and the purpose of this report is to focus on creating a **regression** model the predicts the score an anime receives, which is essentially a culmination of audience reviews and ratings for the show.
 Building a predictive model built around the ratings that were given to the animes in this dataset was chosen as a focus of this report because there are a lot of examples of similar models surrounding movies and television in the global west, like the Netflix Prize dataset for modelling user ratings predictions for example.
 It would be interesting to see how it would hold up for anime, which has an entirely demographic of viewers/audience, especially in age and nationality.
 
-# Data Overview
+# Data Overview:
 
 The dataset is sourced from Kaggle and contains 14,949 observations.
-The dependent variable being focused on predicting in this modeling report is the the rating that each anime receives.
+The dependent variable being focused on predicting in this modeling report is the the rating score that each anime receives.
 
-# Methods
+## Exploration of Target Variable
+
+The anime score is a numeric variable that is generally between the values 1-10, where 10 would be the highest score the anime receives.
+A preliminary glance at the distribution shows that most of the scores lie somewhere between 6 and 7.5.
+
+```{r, echo = FALSE}
+load(here("exploration_results/initial_score_exploration.rda"))
+initial_score_exploration
+```
+
+A closer look at the distribution, when removing the most common score of 6.51, shows the distribution centered at a score of 6.25 with a slight left skew.
+
+```{r, echo= FALSE}
+load(here("exploration_results/second_score_exploration.rda"))
+second_score_exploration
+```
+
+## Missingness
+
+The dataset contained no missing values for the score values that are being predicted with the models.
+However there was some missingness in the other variables, the ones being used to predict.
+Below shows the missingness of the the duration of each anime (minutes per episode, or minutes in the movie), the number of episodes, and the ranking given to the anime.
+
+```{r, echo = FALSE}
+load(here("exploration_results/missingness_plot.rda"))
+missingness_plot
+```
+
+The missingness will be addressed in the recipes used for the models, where the missing values will be imputed by the mean values of the variables.
+
+# Methods:
 
 ## Data Splitting
 
@@ -50,28 +87,354 @@ Also the proportion on this dataset was chosen best to avoid giving too little d
 ## Different Models
 
 This report explains the performance of six models, where five of them were run on two different recipes.
-Since this is a regression model, the six chosen models used are listed below: - Null Model: This was chosen as a baseline model, using a parametric baseline recipe, with no extreme expectations on its performance.
-- LM Model: The linear regression model was run twice, once on a baseline/kitchen sink recipe, and once on a more complex, feature-engineered recipe.
-- Boosted Tree Model: The boosted tree model was run twice, once on a baseline/kitchen sink recipe, and once on a more complex, feature-engineered recipe.
-- Elastic Net Model: The elastic net model was run twice, once on a baseline/kitchen sink recipe, and once on a more complex, feature-engineered recipe.
-- K-Nearest Neighbors Model: The K-Nearest Neighbors Model was run twice, once on a baseline/kitchen sink recipe, and once on a more complex, feature-engineered recipe.
-- Random Forest Model: The Random Forest Model was run twice, once on a baseline/kitchen sink recipe, and once on a more complex, feature-engineered recipe.
+(for a total of 11 models) Since this is a regression model, the six chosen models used are listed below:
+
+-   Null Model: This was chosen as a baseline model, using a parametric baseline recipe, with no extreme expectations on its performance.
+
+-   LM Model: The linear regression model was run twice, once on a baseline/kitchen sink recipe, and once on a more complex, feature-engineered recipe.
+
+-   Boosted Tree Model: The boosted tree model was run twice, once on a baseline/kitchen sink recipe, and once on a more complex, feature-engineered recipe.
+
+-   Elastic Net Model: The elastic net model was run twice, once on a baseline/kitchen sink recipe, and once on a more complex, feature-engineered recipe.
+
+-   K-Nearest Neighbors Model: The K-Nearest Neighbors Model was run twice, once on a baseline/kitchen sink recipe, and once on a more complex, feature-engineered recipe.
+
+-   Random Forest Model: The Random Forest Model was run twice, once on a baseline/kitchen sink recipe, and once on a more complex, feature-engineered recipe.
 
 ## Recipe Building
 
-### Baseline / Kitchen Sink Recipe: 
+### Baseline / Kitchen Sink Recipe:
 
+1.  The first step taken in building this recipe was to remove unwanted variables when fitting the models.
+    This specifically included variables that were entirely unique, and served to "ID" each observation, which in this case was the title of the anime.
+    In previous steps of the data cleaning process, other similar variables--such as the synopsis--were already filtered out of the dataset so it did not need to be removed within the recipe.
 
-## Model Building & Selection
+2.  Next was converting categorical numeric variables into dummy variables or binary indicators.
+    While in the data cleaning process, some variables that had an extensive amount of categories (such as genre rating and the source material of the anime) were already split by their factors and turned into binary predictors, other variables such as the type of anime (TV, OVA, etc.) needed to be manipulated in this step of the recipe.
+    This is because commonly, model algorithms need to take in numerical input, and including this within a recipe is a more efficient method of allowing for this.
 
-## Final Model Analysis
+3.  The next step was to center all numeric predictor variables which involved the process of subtracting the mean value of the variable.
+    Normalizing the numeric predictors allows for a mean of zero, making the variable values more comparable across different scales in the different models.
 
-## Conclusion
+4.  Another step for normalizing the numeric predictors was by scaling them so that the variables all have a standard deviation of one.
+    This ensures that variables with significantly different or large ranges are not negatively influencing the model.
+
+5.  Lastly, to deal with missingness across the predictor variables, the missing values need to be imputed with the mean value of the corresponding variable.
+
+Two versions of the kitchen sink recipe were created.
+One that fits parametric models such as linear regression and elastic net model.
+To fit the other tree-based models mentioned earlier, certain steps were altered to better fit a tree model.
+Specifically when turning categorical variables into dummy variables, one-hot encoding was used where each category of a categorical variable was represented by its own binary indicator variable.
+This ensures that these tree models preserve and utilize the categorical information without assuming any specific relationship between categories.
+
+### Feature Engineered Recipe:
+The feature engineered recipes were made for both trees and parametric models but the only difference was as mentioned above, with the one-hot encoding for the dummy variables. The main focus of the feature engineering was creating interaction between predictors. Part of the EDA process was to find correlations between predictors, specifically the number of episodes, the duration of each episodes, and the ranking. There was a high correlation with with the ranking and score, which makes sense as a score given to anime should likely correlate to the ranking its given as well. However, it was not included in the recipe as the predictions would not have included the outcome/target variable anyway. 
+
+There was a correlation of -0.2054627 between the duration of each episodes and the ranking. While this is not a high correlation, studies have shown that shorter length episodes are becoming the norm as more and more people have shorter attention spans. This was previously more common in children television, which is the primary audience of anime, but is now also becoming more common in adult television as well. Therefore the interaction between the two variables were included in the feature engineering part of the recipe. 
+
+The correlation between ranking and number of episodes was 0.005810827 which shows almost no correlation. However, the feature engineered recipe still included a step that correlatted and focused on the interaction between the ranking of the anime and the number of episodes because generally, well-liked television tends to run for longer seasons, and therefore more episodes, as production companies continue to air the show. 
+
+## Resampling Method:
+
+The resampling method used in the models was v-fold cross validation.
+This specific process separated the data a 'v' number of folds containing a nearly equal amount of data.
+For this specific dataset, 5 folds were created, meaning 80% of the training data was used to fit the different models.
+This was chosen so that with the process of cross-validation, fitting models on the folds would help evaluate and tune the hyperparameters best for each model.
+More specifically, the cross-validation was set to repeat 3 times where each repetition generated a new random partitioning of the data into the folds.
+By repeating the cross-validation, it reduces variability in the performance estimates.
+
+## Performance Metric
+
+The chosen metric to evaluate the performance of each model was root mean squared error, also known as RMSE.
+RMSE was chosen as the performance metric to choose the best model largely because it penalizes heavier/larger errors than most metrics.
+Its units are the units of the outcome being predicted, which in this case is the score the anime receives.
+The best model is chosen by having the lowest RMSE value, indicating the predicted values of the model are close to the actual values (an therefore a smaller error).
+
+## Tuning
+
+The models where hyperparameter-tuning was focused on are detailed below.
+The two linear models and the null model did not have any hyperparameters that were tuned or updated.
+
+### Elastic Net Model
+
+*Kitchen Sink*
+
+The parameters that were tuned for the elastic net model was the penalty and mixture parameters.
+The iterations of tuning were done first on the model using the kitchen sink recipe, then the optimal ranges were used on the feature-engineered model.
+On the first round of tuning, default ranges were fitted into the model:
+
+-   Penalty (Amount of Regularization) : (-10,0)
+
+-   Mixture (Proportion of Lasso Penalty) : (0,1)
+
+After performing the tuning process, which involved fitting the different sets of hyperparameters onto the folds and evaluating their performance using cross-validation, below is an plot that summarizes the performance of the model across different hyperparameter values.
+
+```{r, echo = FALSE}
+load(here("exploration_results/autoplot_en_base.rda"))
+autoplot_en_base + 
+  labs(title = "Summary of Parameter Performance on EN Model (Kitchen Sink)", y = "RMSE")
+```
+
+Looking at the plot above, one is able to see that the smallest possible value of RMSE is reached by the parameter ranges tuned on the folds.
+The RMSE value begins to increase at about a 0.001 value of penalty and the lowest RMSE value is at values of mixture greature than 0.
+
+The cross validation process involved finding the best possible tuning parameters and the measure of the performance metric, which in this case is RMSE.
+Below are the values for the elastic net model used on the base line recipe.
+
+```{r, echo = FALSE}
+load(here("exploration_results/tuned_en_base_params.rda"))
+load(here("exploration_results/tuned_en_params.rda"))
+tuned_en_base_params |> 
+  rename("RMSE value" = "mean") |> 
+  rename("Standard Error" = std_err) |> 
+  select("RMSE value", penalty, mixture, "Standard Error") |> 
+  kable()
+```
+
+*Feature-Engineered*
+
+Following the tuning of the elastic net model on the kitchen sink recipe, the same tuning range was used elastic net model with the feature engineered recipe.
+Below is a plot of the performance:
+
+```{r, echo = FALSE}
+load(here("exploration_results/autoplot_en.rda"))
+autoplot_en + 
+  labs(title = "Summary of Parameter Performance on EN Model (Feature Engineered)", y = "RMSE")
+```
+
+The performance of the parameter ranges was extremely identical to the performance on the previous fitting of the kitchen sink recipe.
+Following this, the best values for the parameters are listed below:
+
+```{r, echo = FALSE}
+load(here("exploration_results/tuned_en_params.rda"))
+tuned_en_params|> 
+  rename("RMSE value" = "mean") |> 
+  rename("Standard Error" = std_err) |> 
+  select("RMSE value", penalty, mixture, "Standard Error") |> 
+  kable()
+```
+
+### K-Nearest Neighbor Model
+
+*Kitchen Sink*
+
+The parameter that were tuned for the k-nearest neighbor model was the number of neighbors.
+The iterations of tuning were done first on the model using the kitchen sink recipe, then the optimal ranges were used on the feature-engineered model.
+On the first round of tuning, default ranges were fitted into the model:
+
+-   Neighbors (Nearest Neighbors) : (3,10)
+
+After performing the tuning process, which involved fitting the different sets of hyperparameters onto the folds and evaluating their performance using cross-validation, below is an plot that summarizes the performance of the model across different hyperparameter values.
+
+```{r, echo = FALSE}
+load(here("exploration_results/autoplot_knn_base.rda"))
+
+autoplot_knn_base + 
+  labs(title = "Summary of Parameter Performance on KNN Model (Kitchen Sink)", y = "RMSE")
+```
+
+From the autoplot above, we are able to see that the lowest RMSE is found between the values of 4 and 6 neighbors so in this situation, the decision to do another round/iteration of tuning was not needed as the earlier ranges included values that gave the lowest RMSE.
+
+Below are the best tuning parameters for the KNN fitting on the kitchen sink recipe where the result gives the lowest RMSE.
+
+```{r, echo = FALSE}
+load(here("exploration_results/tuned_knn_base_params.rda"))
+tuned_knn_base_params|> 
+  rename("RMSE value" = "mean") |> 
+  rename("Standard Error" = std_err) |> 
+  select("RMSE value", neighbors, "Standard Error") |> 
+  kable()
+```
+
+*Feature-Engineered*
+
+For the feature engineered recipe, the range of (3,10) was kept in the first round of tuning.
+Below is an autoplot of its performance.
+
+```{r, echo = FALSE}
+load(here("exploration_results/autoplot_knn_2.rda"))
+
+autoplot_knn_2 + 
+  labs(title = "Summary of Parameter Performance on KNN Model (Feature Engineer)", y = "RMSE")
+```
+
+The decision to do another round of tuning was taken because, the left side of the plot showed a steady decrease of the RMSE value as the number of neighbors decreased.
+The tuning range for number of neighbors was then **widened to (1,10)**.
+Below is the plot showing its performance.
+
+```{r, echo = FALSE}
+load(here("exploration_results/autoplot_knn.rda"))
+
+autoplot_knn + 
+  labs(title = "Summary of Parameter Performance on KNN Model (Feature Engineer)", y = "RMSE")
+```
+
+The lowest possible RMSE is better highlighted within this tuning range and so further rounds of tuning were not done.
+Below are the best tuning parameters for the KNN fitting on the feature-engineered recipe where the result gives the lowest RMSE.
+
+```{r, echo = FALSE}
+load(here("exploration_results/tuned_knn_params.rda"))
+tuned_knn_params|> 
+  rename("RMSE value" = "mean") |> 
+  rename("Standard Error" = std_err) |> 
+  select("RMSE value", neighbors, "Standard Error") |> 
+  kable()
+```
+
+### Random Forest Model
+*Kitchen Sink*
+
+The parameters that were tuned for the random forest model were the minimal node size (min_n) and the number of predictors to try at each split when constructing a decision tree within the random forest (mtry). 
+The iterations of tuning were done first on the model using the kitchen sink recipe, then the optimal ranges were used on the feature-engineered model.
+On the first round of tuning, default ranges were fitted into the model: 
+
+-   min_n (Minimal Node Size) : (1,10)
+-   mtry (Randomly Selected Predictors) : (1,5)
+
+Five, as the upper end of the mtry range, was chosen because it represented the square root of the number of predictors used in the model. 
+
+Below is an plot that summarizes the performance of the model across different hyperparameter values.
+```{r, echo = FALSE}
+load(here("exploration_results/autoplot_rf_base.rda"))
+
+autoplot_rf_base + 
+  labs(title = "Summary of Parameter Performance on RF Model (Kitchen SInk)", y = "RMSE")
+```
+Above, the plot shows a steady, near linear, decline of RMSE as the value of mtry increase, so the decision to expand the range of mtry to see if there would be an even smaller RMSE value was made. The range for **mtry was widened to (1,15)**, where 15 showed the total number of predictors. There was little variance in RMSE for change in the min_n, so that range was kept the same. 
+
+Below is the performance of the new round of tuning.
+```{r, echo = FALSE}
+load(here("exploration_results/autoplot_rf_base4.rda"))
+
+autoplot_rf_base + 
+  labs(title = "Summary of Parameter Performance on RF Model (Kitchen SInk)", y = "RMSE")
+```
+The RMSE steadily declines and then levels out as it reached 15 predictors for mtry, which concluded the tuning process. Below are the best tuning values and the corresponding RMSE value on the kitchen sink random forest model. 
+```{r, echo = FALSE}
+load(here("exploration_results/tuned_rf_base_params.rda"))
+tuned_rf_base_params|> 
+  rename("RMSE value" = "mean") |> 
+  rename("Standard Error" = std_err) |> 
+  select("RMSE value", min_n, mtry, "Standard Error") |> 
+  kable()
+```
+
+*Feature Engineered* 
+
+For the feature engineered model, the mtry and min_n ranges, (1,15) and (1,10) respectively, were kept for the first round of tuning. Below is the performance of these ranges on the random forest model fitted with the feature-engineered recipe on the folded data. 
+
+```{r, echo = FALSE}
+load(here("exploration_results/autoplot_rf.rda"))
+
+autoplot_rf + 
+  labs(title = "Summary of Parameter Performance on RF Model (Feature Engineer)", y = "RMSE")
+```
+
+There was little variance in the the min_n value and the a local mininum of RMSE was achieved with this range of predictors for mtry (the range could not be expanded further as that was the highest number of predictors). 
+
+Below are the best tuning values and the corresponding RMSE value on the feature engineered random forest model. 
+```{r, echo = FALSE}
+load(here("exploration_results/tuned_rf_params.rda"))
+tuned_rf_params|> 
+  rename("RMSE value" = "mean") |> 
+  rename("Standard Error" = std_err) |> 
+  select("RMSE value", min_n, mtry, "Standard Error") |> 
+  kable()
+```
+### Boosted Tree Model
+*Kitchen Sink*
+
+The parameters that were tuned for the boosted tree model were the minimal node size (min_n), learn rate, and the number of predictors to try at each split when constructing a decision tree within the random forest (mtry). 
+The iterations of tuning were done first on the model using the kitchen sink recipe, then the optimal ranges were used on the feature-engineered model.
+On the first round of tuning, default ranges were fitted into the model: 
+
+-   min_n (Minimal Node Size) : (1,10)
+-   mtry (Randomly Selected Predictors) : (1,4)
+-   learn rate : (-10,-1)
+
+Below is the performance of the first round of tuning, fitting the kitchen sink tree recipe on a boosted tree model. 
+```{r, echo = FALSE}
+load(here("exploration_results/autoplot_bt_base.rda"))
+
+autoplot_bt_base + 
+  labs(title = "Summary of Parameter Performance on BT Model (Kitchen Sink)", y = "RMSE")
+```
+While it is hard to distinguish any relation between RMSE values and each parameter, further tuning was done to each parameter at a time to evaluate how they each affect the performance. When changing the parameter of the minimal node size, little change was done to the RMSE value, so mtry and learning rate needed to be tuned next. The next round of tuning **changed the learn rate range to (0.09,0.11).**
+Below is the performance of the second round of tuning. 
+```{r, echo = FALSE}
+load(here("exploration_results/autoplot_bt_base2.rda"))
+
+autoplot_bt_base + 
+  labs(title = "Summary of Parameter Performance on BT Model (Kitchen Sink)", y = "RMSE")
+```
+Shifting the range of learn rate affected the RMSE values. For the capabilities of this report, further iterations of tuning did not take place but seeing as there is no significant relationship between the parameters and the RMSE values able to be seen by the plot above, might encourage further rounds of tuning! Below shows the best values for the tuning parameters and the corresponding RMSE values for fitting a kitchen sink recipe to a boosted tree model. 
+
+```{r, echo = FALSE}
+load(here("exploration_results/tuned_bt_base_params.rda"))
+tuned_bt_base_params|> 
+  rename("RMSE value" = "mean") |> 
+  rename("Standard Error" = std_err) |> 
+  select("RMSE value", min_n, mtry, learn_rate, "Standard Error") |>
+  kable()
+```
+
+*Feature Engineered* 
+
+The previous ranges used on the kitchen sink model were used as for the first round of tuning on the boosted tree, feature engineered model. Below shows the performance on this fitting. 
+
+```{r, echo = FALSE}
+load(here("exploration_results/autoplot_bt.rda"))
+
+autoplot_bt + 
+  labs(title = "Summary of Parameter Performance on BT Model (Kitchen Sink)", y = "RMSE")
+```
+Since the plot is identical to the previous ones, with no clear relationship, further tuning was not done in this report (although as mentioned before, there may be an avenue of further exploration). Below are the best tuning parameter values and the corresponding RMSE for a boosted tree model fitted with the folded data supplied by the feature engineered tree recipe. 
+
+```{r, echo = FALSE}
+load(here("exploration_results/tuned_bt_params.rda"))
+tuned_bt_params|> 
+  rename("RMSE value" = "mean") |> 
+  rename("Standard Error" = std_err) |> 
+  select("RMSE value", min_n, mtry, learn_rate, "Standard Error") |>
+  kable()
+```
+# Model Building & Selection:
+To reiterate, RMSE was the chosen metric to evaluate the performance of the different models. When fitting both kitchen sink and feature engineered recipe on the different models, the RMSE values were always lower on the feature engineered models. Below shows the RMSEs for each model, including the null model and the two linear models. 
+
+```{r, echo=FALSE}
+load(here("results/RMSE_table.rda"))
+RMSE_table
+```
+
+Again, we can see that feature-engineered models did better than their corresponding kitchen sink model. This shows that the extra steps added to the recipe, such as removing more predictors and creating interactions between other predictors, helped the model's performance. **The winning model was the random forest model, using the feature-engineered recipe.** This is because it had the lowest RMSE value, meaning this model's predictions will be the most accurate. Below reiterates the best tuning parameters for this model.
+
+```{r, echo = FALSE}
+load(here("exploration_results/tuned_rf_params.rda"))
+tuned_rf_params|> 
+  rename("RMSE value" = "mean") |> 
+  rename("Standard Error" = std_err) |> 
+  select("RMSE value", min_n, mtry, "Standard Error") |> 
+  kable()
+```
+
+The best minimal node size for this model would be 7 while the number of randomly selected predictors (or mtry) is 13 which is nearly 90% of the number of predictors used in the modeling process. This is interesting because the general choice is to use between 50 - 70% of the number of predictors! This may call for further tuning to see if different variations of both min_n and mtry are better and increase performance! 
+
+The random forest models generally performing better than any other model was not entirely surprising as random forests are better capable of capturing  non-linear relationships between predictors and the target variable, making them suitable for this dataset that had many non-linear relationships between the outcome of score and other variables that measured episode duration, number of episodes, genres, and ratings! Also, as mentioned earlier, the number of trees was left constant throughout this whole process of tuning due to computational efficiency reasons, so this may create another avenue of tuning and further exploration as more trees help overcome the limitations of single-tree models that do not necessarily have the best predictive accuracy! 
+
+# Final Model Analysis:
+
+Following the selection of the best model, the entire training data set was fitted onto the random forest model with the feature engineered recipe. This final fitting was then use to test on the testing data and create predicted values to compare with. Below shows the performance metrics of RMSE, R^2 (R-Squared), and MAE (Mean Absolute Error) on the final model!
+
+```{r, echo = FALSE}
+load(here("results/evaluation_table.rda"))
+evaluation_table
+```
+The results of these performance metrics are surprisingly well performing, with a very low RMSE value of 0.107, (still low in comparison to the other models), meaning the predicted values are not far off from the actual values of the testing data. The R^2 value, which ranges from 0-1, is 0.98 which means it explains almost all of the variability of the data around its mean. MAE is similar to RMSE in that the units are the same as the score the anime received and evaluates the average absolute difference between the predicted values and the actual values in the dataset. Since the MAE value was extremely small, at 0.01, this is a good performance of the model as the difference between the predicted values and the actual values was small. 
+
+# Conclusion:
 
 ## References — if needed
 
 ## Appendix: technical info — if needed
 
 ## Appendix: EDA — if needed
-
-A## ppendix: extras — if needed
