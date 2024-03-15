@@ -29,59 +29,6 @@ load("results/tuned_rf.rda")
 
 set.seed(23456)
 
-model_results <- as_workflow_set(
-  bt = tuned_bt,
-  rf = tuned_rf,
-  knn = tuned_knn,
-  en = tuned_en,
-  null = null_fit,
-  lm = lm_fit,
-  baseline_lm = lm_fit_base,
-  bt_base = tuned_bt_base,
-  rf_base = tuned_rf_base,
-  knn_base = tuned_knn_base,
-  en_base = tuned_en_base,
-  )
-
-model_results <- as_workflow_set(
-  bt = tuned_bt,
-  rf = tuned_rf,
-  knn = tuned_knn,
-  en = tuned_en,
-  null = null_fit,
-  lm = lm_fit,
-  baseline_lm = lm_fit_base,
-  bt_base = tuned_bt_base,
-  rf_base = tuned_rf_base,
-  knn_base = tuned_knn_base,
-  en_base = tuned_en_base,
-)
-
-
-model_results <- as_workflow_set(
-  bt = bt_results,
-  rf = rf_results,
-  knn = knn_results,
-  en = en_results,
-  null = null_results,
-  lm = lm_results,
-  baseline_lm = lm_base_results,
-  bt_base = bt_base_results,
-  rf_base = rf_base_results,
-  knn_base = knn_base_results,
-  en_base = en_base_results,
-)
-model_results <- RMSE_table |>
-  collect_metrics() |>
-  filter(.metric == "rmse") |>
-  slice_min(mean, by = wflow_id) |>
-  arrange(mean) |>
-  select(`Model Type` = wflow_id,
-         `RMSE` = mean,
-         `Standard Error` = std_err)
-
-model_results
-
 ################
 
 null_results <- null_fit |>
@@ -119,7 +66,7 @@ en_base_results <- tuned_en_base |>
   slice_min(mean) |>
   mutate(model = "EN (base recipe)")|>
   slice(sample(n(), 1))
-en_base_results
+
 en_results <- tuned_en |>
   show_best("rmse") |>
   slice_min(mean) |>

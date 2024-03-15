@@ -31,3 +31,13 @@ evaluation_table <- bind_rows(
   kable()
 evaluation_table
 save(evaluation_table, file = here("results/evaluation_table.rda"))
+
+# scatterplot
+
+scatterplot <- ggplot(prediction_comparison, aes(x = score, y = .pred)) +
+  geom_abline(lty = 2) +
+  geom_point(alpha = 0.5) +
+  labs(y = "Predicted Score", x = "Actual Score", title = "Prediction Accuracy of Final Model") +
+  coord_obs_pred()
+scatterplot
+save(scatterplot, file = here("results/scatterplot.rda"))
